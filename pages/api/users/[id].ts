@@ -10,6 +10,26 @@ const getUser = async (id: string): Promise<User | null> => {
         _id
         email
         gamertag
+        # Could add pagination later if needed?
+        games_bucket_list {
+          data {
+            _id
+            status
+            date_completed
+            list_order
+            notes
+            date_added
+            game {
+              _id
+              score
+              year
+              info
+              hltb_id
+              length
+              title
+            }
+          }
+        }
       }
     }
   `
