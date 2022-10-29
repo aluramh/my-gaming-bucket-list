@@ -5,7 +5,7 @@ enum GameStatus {
 }
 
 type Game {
-  id: ID!
+  hltb_id: ID! @unique
   title: String!
   length: Float!
   score: Float
@@ -24,9 +24,8 @@ type GameRecord {
 }
 
 type User {
-  id: ID!
-  gamertag: String!
-  email: String!
+  gamertag: String! @unique
+  email: String! @unique
   password: String!
   date_created: String!
   games_bucket_list: [GameRecord!]! @relation(name: "user_game_records")
