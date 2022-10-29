@@ -1,12 +1,40 @@
+import { gql } from 'graphql-request'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { graphQLClient } from '../../../lib/fauna'
+import { User } from '../../../types/schema'
 
-type Data = {
-  name: string
+const getUser = async (id: string): Promise<User | null> => {
+  const query = gql`
+    query FindUserById($id: ID!) {
+      findUserByID(id: $id) {
+        _id
+        email
+        gamertag
+      }
+    }
+  `
+
+  return graphQLClient
+    .request(query, { id })
+    .then(({ findUserByID: user }) => user)
 }
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
+export default async function handler(
+  { query: { id } }: NextApiRequest,
+  res: NextApiResponse<any>
 ) {
-  res.status(200).json({ name: 'John Doe' })
+  try {
+    if (!id || typeof id !== 'string') {
+      return res.status(400).end()
+    }
+
+    const user = await getUser(
+      id as string //'346823643391590481'
+    )
+
+    return res.status(200).send(user)
+  } catch (error) {
+    console.error(JSON.stringify({ error }, null, 2)) // log server error
+    return res.status(200).send(null)
+  }
 }
