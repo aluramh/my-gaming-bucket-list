@@ -1,0 +1,33 @@
+enum GameStatus {
+  in_progress
+  done
+  not_started
+}
+
+type Game {
+  id: ID!
+  title: String!
+  length: Float!
+  score: Float
+  year: Int
+  info: String
+}
+
+type GameRecord {
+  owner: User! @relation(name: "user_game_records")
+  game: Game!
+  list_order: Int!
+  status: GameStatus!
+  notes: String
+  date_added: String!
+  date_completed: String
+}
+
+type User {
+  id: ID!
+  gamertag: String!
+  email: String!
+  password: String!
+  date_created: String!
+  games_bucket_list: [GameRecord!]! @relation(name: "user_game_records")
+}
