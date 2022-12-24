@@ -47,9 +47,10 @@ export type GameRecord = {
 
 export type User = {
   __typename?: 'User'
-  gamertag: Scalars['String']
+  _id: Scalars['String']
   email: Scalars['String']
+  gamertag: Scalars['String']
+  games_bucket_list: { data: Array<GameRecord> }
   password: Scalars['String']
   date_created: Scalars['String']
-  games_bucket_list: Array<GameRecord>
 }

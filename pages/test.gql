@@ -1,0 +1,25 @@
+mutation CreateGameRecord($data: GameRecordInput!) {
+  createGameRecord(
+    data: {
+      data: {
+        owner: { connect: "346823643391590481" }
+        game: {
+          create: {
+            hltb_id: "123-456-789"
+            year: 2021
+            title: "Returnal"
+            length: 9.2
+          }
+        }
+        list_order: 1
+        status: done
+        date_added: "10-10-2022"
+      }
+    }
+  ) {
+    _id
+    game {
+      title
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { graphQLClient } from '../../../lib/fauna'
-import { User } from '../../../types/schema'
+import { graphQLClient } from '../../../../lib/fauna'
+import { User } from '../../../../types/schema'
 
 const getUser = async (id: string): Promise<User | null> => {
   const query = gql`
@@ -54,7 +54,7 @@ export default async function handler(
 
     return res.status(200).send(user)
   } catch (error) {
-    console.error(JSON.stringify({ error }, null, 2)) // log server error
+    console.log(JSON.stringify({ error }, null, 2)) // log server error
     return res.status(200).send(null)
   }
 }
