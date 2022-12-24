@@ -1,4 +1,3 @@
-import { use } from 'react'
 import { User } from '../../../types/schema'
 import { CreateRecords } from './create-records'
 
@@ -16,8 +15,8 @@ interface PageProps {
   searchParams?: { [key: string]: string | string[] | undefined }
 }
 
-export default function Home({ params: { userId } }: PageProps) {
-  let user = use(getGames(userId))
+export default async function Home({ params: { userId } }: PageProps) {
+  let user = await getGames(userId)
   console.log({ user })
 
   const gameRecords = user.games_bucket_list.data
