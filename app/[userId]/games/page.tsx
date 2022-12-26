@@ -59,16 +59,16 @@ export default function Home({ params: { userId } }: PageProps) {
 
   return (
     <>
-      <div className="flex flex-row mb-3 w-full">
+      <div className="mb-3 flex w-full flex-row">
         <input
           placeholder="Search for a game"
-          className="px-3 py-4 text-black rounded flex-1 mr-3"
+          className="mr-3 flex-1 rounded px-3 py-4 text-black"
           onChange={onSearchChange}
           value={search}
         />
         <button
           onClick={onAddClick}
-          className="bg-slate-400 break-keep px-3 py-4"
+          className="break-keep bg-slate-400 px-3 py-4"
         >
           Add game
         </button>

@@ -10,9 +10,9 @@ export const GameRecordItem = ({
   gameRecord: { game, ...stats },
 }: React.PropsWithChildren<Props>) => {
   return (
-    <div className="bg-slate-500 px-4 py-3 rounded-md mb-3">
+    <div className="mb-3 rounded-md bg-slate-500 px-4 py-3">
       <div className="flex flex-col">
-        <h1 className="text-slate-50 text-2xl mb-3">
+        <h1 className="mb-3 text-2xl text-slate-50">
           {game.title}{' '}
           {game.year && (
             <span className="text-lg text-slate-300">({game.year})</span>

@@ -39,7 +39,7 @@ export const CreateRecords: React.FC<Props> = ({ userId, onCreate }) => {
   return (
     <>
       {error && (
-        <div className="bg-red-300 p-3 rounded-md my-3 text-red-900">
+        <div className="my-3 rounded-md bg-red-300 p-3 text-red-900">
           <div
             className="flex flex-row justify-between"
             onClick={() => setError(null)}
@@ -52,7 +52,7 @@ export const CreateRecords: React.FC<Props> = ({ userId, onCreate }) => {
 
       <div className="flex flex-row gap-2">
         <button
-          className="px-3 py-2 bg-teal-800 rounded-sm"
+          className="rounded-sm bg-teal-800 px-3 py-2"
           onClick={() =>
             handleClick({
               userId: userId,
@@ -66,7 +66,7 @@ export const CreateRecords: React.FC<Props> = ({ userId, onCreate }) => {
         </button>
 
         <button
-          className="px-3 py-2 bg-teal-800 rounded-sm"
+          className="rounded-sm bg-teal-800 px-3 py-2"
           onClick={() =>
             handleClick({
               userId: userId,
