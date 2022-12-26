@@ -11,13 +11,19 @@ interface PageProps {
 }
 
 export default function Home({ params: { userId } }: PageProps) {
-  const { data: user, error, isLoading, isLoadingError } = useUser(userId)
+  const {
+    data: user,
+    error,
+    isLoading,
+    isLoadingError,
+    refetch,
+  } = useUser(userId)
 
   if (isLoading) {
     return <Loading />
   }
 
-  if (error || isLoadingError) {
+  if (error || isLoadingError || !user) {
     return <div>Error!</div>
   }
 
@@ -45,10 +51,7 @@ export default function Home({ params: { userId } }: PageProps) {
       <ul className="bg-slate-500 p-3 rounded-md my-3">
         <>{getList()}</>
 
-        <CreateRecords
-          userId={user._id}
-          // onCreate={() => getGames(userId)}
-        />
+        <CreateRecords userId={user._id} onCreate={() => refetch()} />
       </ul>
     </>
   )

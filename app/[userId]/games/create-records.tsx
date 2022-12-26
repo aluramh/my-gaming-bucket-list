@@ -16,7 +16,7 @@ interface Props {
  * @param props
  * @returns
  */
-export const CreateRecords: React.FC<Props> = (props) => {
+export const CreateRecords: React.FC<Props> = ({ userId, onCreate }) => {
   const [error, setError] = React.useState<Error | null>(null)
 
   const handleClick = async (payload: CreateGame.RequestBody) => {
@@ -26,7 +26,10 @@ export const CreateRecords: React.FC<Props> = (props) => {
         body: JSON.stringify(payload),
       })
 
-      return await res.json()
+      await res.json()
+
+      // Execute the callback prop
+      onCreate?.()
     } catch (error) {
       setError(error as Error)
       console.error(error)
@@ -52,7 +55,7 @@ export const CreateRecords: React.FC<Props> = (props) => {
           className="px-3 py-2 bg-teal-800 rounded-sm"
           onClick={() =>
             handleClick({
-              userId: props.userId,
+              userId: userId,
               listOrder: 1,
               status: GameStatus.NotStarted,
               game: MOCK_GAMES[0],
@@ -66,8 +69,8 @@ export const CreateRecords: React.FC<Props> = (props) => {
           className="px-3 py-2 bg-teal-800 rounded-sm"
           onClick={() =>
             handleClick({
-              userId: props.userId,
-              listOrder: 1,
+              userId: userId,
+              listOrder: 2,
               status: GameStatus.NotStarted,
               game: MOCK_GAMES[1],
             })

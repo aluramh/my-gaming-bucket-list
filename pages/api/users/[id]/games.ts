@@ -24,6 +24,7 @@ export namespace CreateGame {
     status: GameStatus
     userId: string
     listOrder: number // How do we compute this? Should it be nullable?
+    hltbId?: any
   }
 }
 
@@ -31,26 +32,29 @@ export default async function handler(
   { method, ...req }: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { userId, game, status, listOrder }: CreateGame.RequestBody = req.body
-
   try {
+    const { userId, game, status, listOrder }: CreateGame.RequestBody =
+      JSON.parse(req.body)
+
     if (method === 'POST') {
-      const data = {
-        // owner: { connect: '346823643391590481' },
-        owner: { connect: userId },
-        game: { create: game },
-        status: status,
-        date_added: new Date().toISOString(),
-        list_order: listOrder,
+      const payload = {
+        data: {
+          owner: { connect: userId },
+          game: { create: game },
+          list_order: listOrder,
+          status: status || GameStatus.NotStarted,
+          date_added: new Date().toISOString(),
+        },
       }
 
-      const response = await createGameRecord({ data })
+      const response = await createGameRecord(payload)
+
       return res.send(response)
     }
 
     return res.status(400).end()
-  } catch (error) {
-    console.error(error)
-    return res.status(500).end()
+  } catch (e) {
+    console.error(e)
+    return res.status(500).send(e)
   }
 }
