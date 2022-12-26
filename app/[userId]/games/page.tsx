@@ -3,7 +3,7 @@ import { CreateRecords } from './create-records'
 
 let baseUrl = 'http://localhost:3000/api'
 
-const getGames = async (userId: string) => {
+const getUser = async (userId: string) => {
   let res = await fetch(baseUrl + `/users/${userId}`)
   return (await res.json()) as User
 }
@@ -16,10 +16,24 @@ interface PageProps {
 }
 
 export default async function Home({ params: { userId } }: PageProps) {
-  let user = await getGames(userId)
+  let user = await getUser(userId)
   console.log({ user })
 
-  const gameRecords = user.games_bucket_list.data
+  const getList = () => {
+    const gameRecords = user.games_bucket_list.data
+
+    if (!gameRecords || gameRecords.length <= 0) {
+      return <p>The list is empty 🤖 Add a new game to your bucket list!</p>
+    }
+
+    return gameRecords.map((item) => {
+      return (
+        <li>
+          <pre>{JSON.stringify(item, null, 2)}</pre>
+        </li>
+      )
+    })
+  }
 
   return (
     <>
@@ -27,17 +41,7 @@ export default async function Home({ params: { userId } }: PageProps) {
       <pre>{JSON.stringify(user, null, 2)}</pre>
 
       <ul className="bg-slate-500 p-3 rounded-md my-3">
-        {gameRecords.length > 0 ? (
-          gameRecords.map((item) => {
-            return (
-              <li>
-                <pre>{JSON.stringify(item, null, 2)}</pre>
-              </li>
-            )
-          })
-        ) : (
-          <p>The list is empty 🤖 Add a new game to your bucket list!</p>
-        )}
+        <>{getList()}</>
 
         <CreateRecords
           userId={user._id}
