@@ -19,6 +19,7 @@ export default function Home({ params: { userId } }: PageProps) {
     isLoadingError,
     refetch,
   } = useUser(userId)
+  const [search, setSearch] = React.useState('')
 
   if (isLoading) {
     return <Loading />
@@ -26,6 +27,18 @@ export default function Home({ params: { userId } }: PageProps) {
 
   if (error || isLoadingError || !user) {
     return <div>Error!</div>
+  }
+
+  const onAddClick = () => {
+    setSearch('')
+  }
+
+  const onSearchChange = ({
+    currentTarget: { value },
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(value)
+
+    // Fetch from API
   }
 
   const getList = () => {
@@ -46,8 +59,20 @@ export default function Home({ params: { userId } }: PageProps) {
 
   return (
     <>
-      <p>This is my page</p>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+      <div className="flex flex-row mb-3 w-full">
+        <input
+          placeholder="Search for a game"
+          className="px-3 py-4 text-black rounded flex-1 mr-3"
+          onChange={onSearchChange}
+          value={search}
+        />
+        <button
+          onClick={onAddClick}
+          className="bg-slate-400 break-keep px-3 py-4"
+        >
+          Add game
+        </button>
+      </div>
 
       <>{getList()}</>
 

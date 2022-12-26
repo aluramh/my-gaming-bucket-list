@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { graphQLClient } from '../../../../lib/fauna'
 import { User } from '../../../../types/schema'
 
-const getUser = async (id: string): Promise<User | null> => {
+const getGame = async (id: string): Promise<User | null> => {
   const query = gql`
     query FindUserById($id: ID!) {
       findUserByID(id: $id) {
@@ -44,17 +44,10 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   try {
-    if (!id || typeof id !== 'string') {
-      return res.status(400).end()
-    }
+    const game = await getGame(id as string)
 
-    const user = await getUser(
-      id as string //'346823643391590481'
-    )
-
-    return res.status(200).send(user)
+    return res.status(200).send(game)
   } catch (error) {
-    console.log(JSON.stringify({ error }, null, 2)) // log server error
     return res.status(200).send(null)
   }
 }
