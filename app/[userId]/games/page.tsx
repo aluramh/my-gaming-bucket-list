@@ -1,9 +1,12 @@
+'use client'
+
+import React from 'react'
 import { User } from '../../../types/schema'
 import { CreateRecords } from './create-records'
 
 let baseUrl = 'http://localhost:3000/api'
 
-const getUser = async (userId: string) => {
+const fetchUser = async (userId: string) => {
   let res = await fetch(baseUrl + `/users/${userId}`)
   return (await res.json()) as User
 }
@@ -15,9 +18,28 @@ interface PageProps {
   searchParams?: { [key: string]: string | string[] | undefined }
 }
 
-export default async function Home({ params: { userId } }: PageProps) {
-  let user = await getUser(userId)
-  console.log({ user })
+const useUser = (userId: string) => {
+  const [user, setUser] = React.useState<User>()
+
+  React.useEffect(() => {
+    getUser()
+  }, [userId])
+
+  const getUser = async () => {
+    let user = await fetchUser(userId)
+    console.log({ user })
+    setUser(user)
+  }
+
+  return { user, getUser }
+}
+
+export default function Home({ params: { userId } }: PageProps) {
+  const { user } = useUser(userId)
+
+  if (!user) {
+    return null
+  }
 
   const getList = () => {
     const gameRecords = user.games_bucket_list.data
