@@ -1,44 +1,24 @@
 'use client'
 
 import React from 'react'
-import { User } from '../../../types/schema'
+import { useUser } from '../../../hooks/useUser'
 import { CreateRecords } from './create-records'
-
-let baseUrl = 'http://localhost:3000/api'
-
-const fetchUser = async (userId: string) => {
-  let res = await fetch(baseUrl + `/users/${userId}`)
-  return (await res.json()) as User
-}
-
-// 346823643391590481
+import Loading from './loading'
 
 interface PageProps {
   params: { userId: string }
   searchParams?: { [key: string]: string | string[] | undefined }
 }
 
-const useUser = (userId: string) => {
-  const [user, setUser] = React.useState<User>()
+export default function Home({ params: { userId } }: PageProps) {
+  const { data: user, error, isLoading, isLoadingError } = useUser(userId)
 
-  React.useEffect(() => {
-    getUser()
-  }, [userId])
-
-  const getUser = async () => {
-    let user = await fetchUser(userId)
-    console.log({ user })
-    setUser(user)
+  if (isLoading) {
+    return <Loading />
   }
 
-  return { user, getUser }
-}
-
-export default function Home({ params: { userId } }: PageProps) {
-  const { user } = useUser(userId)
-
-  if (!user) {
-    return null
+  if (error || isLoadingError) {
+    return <div>Error!</div>
   }
 
   const getList = () => {
