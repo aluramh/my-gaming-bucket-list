@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactQueryWrapper from './ReactQueryWrapper'
 import './globals.css'
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
@@ -9,7 +10,10 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
       </head>
 
       <body className="bg-slate-800 text-white" id="app-body">
-        {children}
+        <ReactQueryWrapper>
+          {/* Children go here */}
+          {children}
+        </ReactQueryWrapper>
       </body>
     </html>
   )
