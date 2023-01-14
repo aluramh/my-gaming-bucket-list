@@ -1,5 +1,6 @@
 'use client'
 
+import { XMarkIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { CreateGame } from '../../../pages/api/users/[id]/games'
 import { MOCK_GAMES } from '../../../tests/mocks'
@@ -19,7 +20,7 @@ interface Props {
 export const CreateRecords: React.FC<Props> = ({ userId, onCreate }) => {
   const [error, setError] = React.useState<Error | null>(null)
 
-  const handleClick = async (payload: CreateGame.RequestBody) => {
+  const handleCreateGame = async (payload: CreateGame.RequestBody) => {
     try {
       let res = await fetch(baseUrl + `/users/${payload.userId}/games`, {
         method: 'POST',
@@ -40,21 +41,26 @@ export const CreateRecords: React.FC<Props> = ({ userId, onCreate }) => {
     <>
       {error && (
         <div className="my-3 rounded-md bg-red-300 p-3 text-red-900">
-          <div
-            className="flex flex-row justify-between"
-            onClick={() => setError(null)}
-          >
+          <div className="flex flex-row justify-between">
             <span>There was an error!</span>
-            <button>X</button>
+
+            <button
+              data-testid="close-create-game-record-error"
+              onClick={() => setError(null)}
+              className="h-6 w-6 rounded-md text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+            >
+              <XMarkIcon />
+            </button>
           </div>
         </div>
       )}
 
+      {/* TODO: - Remove */}
       <div className="flex flex-row gap-2">
         <button
           className="rounded-sm bg-teal-800 px-3 py-2"
           onClick={() =>
-            handleClick({
+            handleCreateGame({
               userId: userId,
               listOrder: 1,
               status: GameStatus.NotStarted,
@@ -68,7 +74,7 @@ export const CreateRecords: React.FC<Props> = ({ userId, onCreate }) => {
         <button
           className="rounded-sm bg-teal-800 px-3 py-2"
           onClick={() =>
-            handleClick({
+            handleCreateGame({
               userId: userId,
               listOrder: 2,
               status: GameStatus.NotStarted,
