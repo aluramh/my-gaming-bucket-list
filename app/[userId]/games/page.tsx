@@ -7,6 +7,7 @@ import { CreateRecords } from './create-records'
 import { GameRecordItem } from './GameRecordItem'
 import GameSearchInput from './GameSearchInput'
 import Loading from './loading'
+let baseUrl = 'http://localhost:3000/api'
 
 interface PageProps {
   params: { userId: string }
@@ -30,8 +31,27 @@ export default function Home({ params: { userId } }: PageProps) {
     return <div>Error!</div>
   }
 
-  const handleRemoveRecord = (item: GameRecord) => {
-    console.log('REMOVING =>', item)
+  const handleRemoveRecord = async (gameRecord: GameRecord) => {
+    try {
+      let res = await fetch(
+        baseUrl + `/users/${userId}/games/${gameRecord._id}`,
+        {
+          method: 'DELETE',
+          body: JSON.stringify({
+            gameRecordId: gameRecord._id,
+            gameId: gameRecord.game._id,
+          }),
+        }
+      )
+      await res.json()
+
+      // onGameRecordRemoval?.()
+    } catch (error) {
+      alert(
+        'The game record cannot be deleted at this time. Please try again later.'
+      )
+      console.error(error)
+    }
   }
 
   const getList = () => {

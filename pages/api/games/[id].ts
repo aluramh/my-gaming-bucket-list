@@ -1,52 +1,31 @@
-import { gql } from 'graphql-request'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { graphQLClient } from '../../../lib/fauna'
-import { Game } from '../../../types/schema'
+import { getGame } from '../../../lib/model'
 
-const getGame = async (id: string): Promise<Game | null> => {
-  const query = gql`
-    query FindUserById($id: ID!) {
-      findUserByID(id: $id) {
-        _id
-        email
-        gamertag
-        # Could add pagination later if needed?
-        games_bucket_list {
-          data {
-            _id
-            status
-            date_completed
-            list_order
-            notes
-            date_added
-            game {
-              _id
-              score
-              year
-              info
-              hltb_id
-              length
-              title
-            }
-          }
-        }
-      }
-    }
-  `
-
-  return graphQLClient
-    .request(query, { id })
-    .then(({ findUserByID: user }) => user)
+const handleGET = async (
+  { query: { id } }: NextApiRequest,
+  res: NextApiResponse
+) => {
+  console.log({ id })
+  const game = await getGame(id as string)
+  console.log({ game })
+  return res.send(game)
 }
 
 export default async function handler(
-  { query: { id } }: NextApiRequest,
+  req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
   try {
-    const game = await getGame(id as string)
-    return res.send(game)
+    switch (req.method) {
+      case 'GET':
+        handleGET(req, res)
+        break
+
+      default:
+        throw new Error('Unsupported HTTP Method')
+    }
   } catch (error) {
-    return res.status(500).end()
+    console.error(error)
+    return res.status(500).send(JSON.stringify(error, null, 2))
   }
 }
