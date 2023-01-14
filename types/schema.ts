@@ -26,6 +26,7 @@ export enum GameStatus {
 
 export type Game = {
   __typename?: 'Game'
+  _id: string
   hltb_id: Scalars['ID']
   title: Scalars['String']
   length: Scalars['Float']
@@ -36,6 +37,7 @@ export type Game = {
 
 export type GameRecord = {
   __typename?: 'GameRecord'
+  _id: string
   owner: User
   game: Game
   list_order: Scalars['Int']

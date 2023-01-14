@@ -11,11 +11,23 @@ export const getGame = async (id: string): Promise<Game | null> => {
     }
   `
 
-  // console.log({ query })
-
   return graphQLClient
     .request(query, { id })
     .then(({ findGameByID: game }) => game)
+}
+
+export const deleteGame = (gameId: string) => {
+  const query = gql`
+    mutation DeleteGame($id: ID!) {
+      deleteGame(id: $id) {
+        _id
+      }
+    }
+  `
+
+  return graphQLClient
+    .request(query, { id: gameId })
+    .then((response) => response)
 }
 
 export const deleteGameRecord = async (gameRecordId: string) => {
