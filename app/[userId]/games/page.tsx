@@ -45,7 +45,7 @@ export default function Home({ params: { userId } }: PageProps) {
       )
       await res.json()
 
-      // onGameRecordRemoval?.()
+      refetch()
     } catch (error) {
       alert(
         'The game record cannot be deleted at this time. Please try again later.'

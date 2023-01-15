@@ -2,7 +2,7 @@
 
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import React from 'react'
-import { CreateGame } from '../../../pages/api/users/[id]/games'
+import { CreateGameRecord } from '../../../pages/api/users/[id]/games'
 import { MOCK_GAMES } from '../../../tests/mocks'
 import { GameStatus } from '../../../types/schema'
 let baseUrl = 'http://localhost:3000/api'
@@ -20,7 +20,7 @@ interface Props {
 export const CreateRecords: React.FC<Props> = ({ userId, onCreate }) => {
   const [error, setError] = React.useState<Error | null>(null)
 
-  const handleCreateGame = async (payload: CreateGame.RequestBody) => {
+  const handleCreateGame = async (payload: CreateGameRecord.RequestBody) => {
     try {
       let res = await fetch(baseUrl + `/users/${payload.userId}/games`, {
         method: 'POST',

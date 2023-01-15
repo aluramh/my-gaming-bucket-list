@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { createGameRecord } from '../../../../../lib/model'
 import { Game, GameStatus } from '../../../../../types/schema'
 
-export namespace CreateGame {
+export namespace CreateGameRecord {
   export interface RequestBody {
     game: Game
     status: GameStatus
@@ -11,8 +11,9 @@ export namespace CreateGame {
     hltbId?: any
   }
 }
+
 const handlePOST = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { userId, game, status, listOrder }: CreateGame.RequestBody =
+  const { userId, game, status, listOrder }: CreateGameRecord.RequestBody =
     JSON.parse(req.body)
 
   // TODO: - Fix typing
@@ -44,8 +45,6 @@ export default async function handler(
       default:
         throw new Error('Unsupported HTTP method: ' + req.method)
     }
-
-    return res.status(400).end()
   } catch (e) {
     console.error(e)
     return res.status(500).send(e)
