@@ -68,7 +68,7 @@ export default function GameSearchInput() {
 
       <button
         onClick={onAddClick}
-        className="break-keep rounded bg-teal-600 px-3 py-4"
+        className="break-keep rounded bg-teal-600 px-5 py-3"
       >
         Add game
       </button>

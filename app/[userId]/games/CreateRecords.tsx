@@ -2,6 +2,7 @@
 
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import React from 'react'
+import { createGameRecord } from '../../../api/main'
 import { CreateGameRecord } from '../../../pages/api/users/[id]/games'
 import { MOCK_GAMES } from '../../../tests/mocks'
 import { GameStatus } from '../../../types/schema'
@@ -20,16 +21,11 @@ interface Props {
 export const CreateRecords: React.FC<Props> = ({ userId, onCreate }) => {
   const [error, setError] = React.useState<Error | null>(null)
 
-  const handleCreateGame = async (payload: CreateGameRecord.RequestBody) => {
+  const handleCreateGameRecord = async (
+    payload: CreateGameRecord.RequestBody
+  ) => {
     try {
-      let res = await fetch(baseUrl + `/users/${payload.userId}/games`, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      })
-
-      await res.json()
-
-      // Execute the callback prop
+      await createGameRecord(userId, payload)
       onCreate?.()
     } catch (error) {
       setError(error as Error)
@@ -60,7 +56,7 @@ export const CreateRecords: React.FC<Props> = ({ userId, onCreate }) => {
         <button
           className="rounded-sm bg-teal-800 px-3 py-2"
           onClick={() =>
-            handleCreateGame({
+            handleCreateGameRecord({
               userId: userId,
               listOrder: 1,
               status: GameStatus.NotStarted,
@@ -74,7 +70,7 @@ export const CreateRecords: React.FC<Props> = ({ userId, onCreate }) => {
         <button
           className="rounded-sm bg-teal-800 px-3 py-2"
           onClick={() =>
-            handleCreateGame({
+            handleCreateGameRecord({
               userId: userId,
               listOrder: 2,
               status: GameStatus.NotStarted,

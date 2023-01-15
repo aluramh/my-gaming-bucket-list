@@ -1,13 +1,13 @@
 'use client'
 
 import React from 'react'
+import { removeGameRecord } from '../../../api/main'
 import { useUser } from '../../../hooks/useUser'
 import { GameRecord } from '../../../types/schema'
-import { CreateRecords } from './create-records'
+import { CreateRecords } from './CreateRecords'
 import { GameRecordItem } from './GameRecordItem'
 import GameSearchInput from './GameSearchInput'
 import Loading from './loading'
-let baseUrl = 'http://localhost:3000/api'
 
 interface PageProps {
   params: { userId: string }
@@ -33,17 +33,7 @@ export default function Home({ params: { userId } }: PageProps) {
 
   const handleRemoveRecord = async (gameRecord: GameRecord) => {
     try {
-      let res = await fetch(
-        baseUrl + `/users/${userId}/games/${gameRecord._id}`,
-        {
-          method: 'DELETE',
-          body: JSON.stringify({
-            gameRecordId: gameRecord._id,
-            gameId: gameRecord.game._id,
-          }),
-        }
-      )
-      await res.json()
+      await removeGameRecord(userId, gameRecord)
 
       refetch()
     } catch (error) {
@@ -77,9 +67,7 @@ export default function Home({ params: { userId } }: PageProps) {
   return (
     <>
       <GameSearchInput />
-
       <>{getList()}</>
-
       <CreateRecords userId={user._id} onCreate={() => refetch()} />
     </>
   )
