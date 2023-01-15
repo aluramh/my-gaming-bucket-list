@@ -38,3 +38,19 @@ export const createGameRecord = async (
 
   return (await res.json()) as CreateGameRecordResponse
 }
+
+/**
+ * Update a specific gameRecord
+ */
+export const updateGameRecord = async (
+  userId: string,
+  gameRecord: GameRecord
+) => {}
+
+/**
+ * Update the GameRecords of a User in batch
+ */
+export const updateUserGameRecords = async (
+  userId: string,
+  gameRecords: GameRecord[]
+) => {}
